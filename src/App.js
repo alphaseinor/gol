@@ -12,16 +12,27 @@ function App() {
     display: ["unset"]
   })
 
-  // initialize the display array
-  if(game.display[0] === "unset"){
-    console.log("unset")
+  const resetDisplay = () => {
     setGame({...game, display: Array.from({length: game.xdim},()=> Array.from({length: game.ydim}, () => false))})
-    
   }
+
+  // initialize the display array
+  useEffect(()=>{
+    if(game.display[0] === "unset"){
+      const gameState = localStorage.getItem("gameState")
+      if(gameState == null){
+        resetDisplay()
+      } else {
+        setGame(JSON.parse(gameState))
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   
   //console.log whenever there's a change in game state
   useEffect(()=>{
     console.log(game)
+    localStorage.setItem("gameState", JSON.stringify(game))
   }, [game])
 
   return (
