@@ -12,12 +12,14 @@ function App() {
     display: ["unset"]
   })
 
+  // initialize the display array
   if(game.display[0] === "unset"){
     console.log("unset")
     setGame({...game, display: Array.from({length: game.xdim},()=> Array.from({length: game.ydim}, () => false))})
     
   }
   
+  //console.log whenever there's a change in game state
   useEffect(()=>{
     console.log(game)
   }, [game])

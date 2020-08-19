@@ -4,9 +4,11 @@ const Column = ({i, j, col}) => {
     return (
         <button 
             key={j} 
-            value={i + " " + j} 
+            value={`{x:${i}, y:${j}}`} 
             className={col.toString()}
-        ></button>
+        >
+            value={"X: " + i + " Y: " + j} 
+        </button>
     )
 }
 
