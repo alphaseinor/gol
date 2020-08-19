@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import './App.scss';
+import Display from './components/display/Display';
 
 function App() {
+
+  const [game, setGame] = useState({
+    speed: 0,
+    play: true,
+    xdim:25,
+    ydim:25,
+    display: ["unset"]
+  })
+
+  if(game.display[0] === "unset"){
+    console.log("unset")
+    setGame({...game, display: Array.from({length: game.xdim},()=> Array.from({length: game.ydim}, () => false))})
+    
+  }
+  
+  useEffect(()=>{
+    console.log(game)
+  }, [game])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1>Conway's Game of Life</h1>
       </header>
+      <main>
+        <Display game={game} />
+      </main>
     </div>
   );
 }
