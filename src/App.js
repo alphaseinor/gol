@@ -3,6 +3,7 @@ import './App.scss';
 import Display from './components/display/Display';
 
 import {GameContext} from './GameContext'
+import Header from './components/header/Header';
 
 function App() {
 
@@ -41,7 +42,7 @@ function App() {
     <GameContext.Provider value={{game, setGame}} >
     <div className="App">
       <header>
-        <h1>Conway's Game of Life</h1>
+        <Header />
       </header>
       <main>
         <Display />

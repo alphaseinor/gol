@@ -78,6 +78,19 @@ button{
     border: black;
   }
 }
+
+header{
+  div{
+    button{
+      color: black;
+      font-size: 1rem;
+      height: auto;
+      width: auto;
+      padding: .25rem 1rem;
+    }
+  }
+}
+
 section{
   height: 12px;
 }
