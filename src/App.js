@@ -26,6 +26,7 @@ function App() {
 
   const [game, setGame] = useState(initialState)
   const [generation, setGeneration] = useState(0)
+  const [display, setDisplay] = useState([])
 
   const playRef = useRef(game.play)
   playRef.current = game.play
@@ -55,15 +56,32 @@ function App() {
     if(playRef.current === true){
       console.log("loop")
 
-      const display = produce(game.display, updateElement => {
-        updateElement.forEach((row, i) => {
+      let display = produce(game.display, updateElement => {
+        game.display.forEach((row, i) => {
           row.forEach((col, j) =>{
             let neighbourCount = 0;
-
+            neighbours.forEach(([x, y])=>{
+              const xi = x+i
+              const jy = y+j
+              //check boundry of element, edge cases
+              if(xi > -1 && xi < game.display.length && jy > -1 && jy < row.length){
+                //count the number of neighbors
+                if(game.display[xi][jy] === true){
+                  neighbourCount++;
+                }
+              }
+              
+              // if there's too little or too many neighbors, then the cell dies
+              if(neighbourCount < 2 || neighbourCount > 3){
+                updateElement[i][j] = false
+              } else if(game.display[i][j] === false && neighbourCount === 3){
+                updateElement[i][j] = true
+              }
+            })
           })
         });
       })
-
+      console.log(display)
       setGame({...game, display: display })
 
       setTimeout(simulationLoop, game.speed * 100)
