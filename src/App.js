@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
 import './App.scss';
 import Display from './components/display/Display';
+
+import {GameContext} from './GameContext'
 
 function App() {
 
@@ -36,14 +38,16 @@ function App() {
   }, [game])
 
   return (
+    <GameContext.Provider value={{game, setGame}} >
     <div className="App">
       <header>
         <h1>Conway's Game of Life</h1>
       </header>
       <main>
-        <Display game={game} />
+        <Display />
       </main>
     </div>
+    </GameContext.Provider>
   );
 }
 

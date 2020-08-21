@@ -6,7 +6,7 @@ const Row = ({row, i}) => {
         <section key={i}>
             {
                 row !== "unset" && row.map((col, j)=>(
-                    <Column key={j} col={col} row={row} i={row.length - i -1} j={j} />
+                    <Column key={j} col={col} row={row} i={i} j={j} />
                 ))
             }
         </section>

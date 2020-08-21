@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Row from './Row'
 
-const Display = ({game}) => {
+import {GameContext} from "../../GameContext"
+
+const Display = () => {
+
+    const {game} = useContext(GameContext)
+
     return(
         <>
         {
