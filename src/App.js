@@ -52,6 +52,7 @@ function App() {
   useEffect(() => {
     const timer = simulationLoop()
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game.play])
 
   //console.log whenever there's a change in game state
@@ -62,7 +63,7 @@ function App() {
   }, [game])
 
   return (
-    <GameContext.Provider value={{game, setGame, initialState, resetDisplay}} >
+    <GameContext.Provider value={{game, setGame}} >
     <div className="App">
       <header>
         <Header />

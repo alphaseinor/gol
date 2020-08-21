@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import {GameContext} from "../../GameContext"
 
 const Header = () => {
-    const {game, setGame, initialState, resetDisplay} = useContext(GameContext)
+    const {game, setGame} = useContext(GameContext)
 
     return (<>
         <h1>Conway's Game of Life</h1>
