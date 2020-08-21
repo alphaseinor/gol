@@ -1,11 +1,19 @@
 import React, { useState, useEffect, useRef  } from 'react';
 import './App.scss';
+import produce from "immer"
+
 import Display from './components/display/Display';
 
 import {GameContext} from './GameContext'
 import Header from './components/header/Header';
 
 function App() {
+
+  const neighbours = [
+    [-1, -1],   [0, -1],   [1, -1],
+    [-1, 0 ],              [1, 0 ],
+    [-1, 1 ],   [0, 1 ],   [1, 1 ],
+  ]
 
   const initialState = {
     speed: 10,
@@ -17,6 +25,7 @@ function App() {
   }
 
   const [game, setGame] = useState(initialState)
+  const [generation, setGeneration] = useState(0)
 
   const playRef = useRef(game.play)
   playRef.current = game.play
@@ -44,12 +53,27 @@ function App() {
 
   const simulationLoop = ()=> {
     if(playRef.current === true){
-      
+      console.log("loop")
+
+      const display = produce(game.display, updateElement => {
+        updateElement.forEach((row, i) => {
+          row.forEach((col, j) =>{
+            let neighbourCount = 0;
+
+          })
+        });
+      })
+
+      setGame({...game, display: display })
+
       setTimeout(simulationLoop, game.speed * 100)
+    }else{
+      return
     }
   }
   
   useEffect(() => {
+    console.log(generation)
     const timer = simulationLoop()
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps

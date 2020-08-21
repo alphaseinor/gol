@@ -13,10 +13,12 @@ const Column = ({i, j, col}) => {
             className={col.toString()}
             onClick={(e)=>{
                 e.preventDefault()
-                const display = produce(game.display, updateButton => {
-                    updateButton[i][j] = game.display[i][j] ? false : true;
-                })
-                setGame({...game, display})
+                if(!game.play){
+                    const display = produce(game.display, updateButton => {
+                        updateButton[i][j] = game.display[i][j] ? false : true;
+                    })
+                    setGame({...game, display})
+                }
             }}
         >
             value={"X: " + j + " Y: " + i}
