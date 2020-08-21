@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect, useCallback, useRef  } from 'react';
 import './App.scss';
 import Display from './components/display/Display';
 
@@ -8,12 +8,15 @@ import Header from './components/header/Header';
 function App() {
 
   const [game, setGame] = useState({
-    speed: 0,
-    play: true,
+    speed: 10,
+    play: false,
     xdim:25,
     ydim:30,
     display: ["unset"]
   })
+
+  const playRef = useRef(game.play)
+  playRef.current = game.play
 
   const resetDisplay = () => {
     setGame({...game, display: Array.from({length: game.ydim},()=> Array.from({length: game.xdim}, () => false))})
@@ -31,11 +34,33 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+
+
+
+  const simulationLoop = ()=> {
+    if(playRef.current === true){
+      console.log("update" + game.play)
+      setTimeout(simulationLoop, game.speed * 100)
+    }
+  }
+
+
   
+  useEffect(() => {
+    // if(!playRef){
+    //   console.log("no playRef")
+    //   return
+    // }
+    const timer = simulationLoop()
+    return () => clearTimeout(timer);
+  }, [game.play])
+
   //console.log whenever there's a change in game state
   useEffect(()=>{
     console.log(game)
-    localStorage.setItem("gameState", JSON.stringify(game))
+    //save the game state, but make sure it's paused
+    localStorage.setItem("gameState", JSON.stringify({...game, play: false}))
   }, [game])
 
   return (

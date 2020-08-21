@@ -4,7 +4,7 @@ import {GameContext} from "../../GameContext"
 
 const Header = () => {
 
-    const {game, setGame} = useContext(GameContext)
+    const {game, setGame, simulationLoop} = useContext(GameContext)
 
     return (<>
         <h1>Conway's Game of Life</h1>
