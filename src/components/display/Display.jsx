@@ -6,7 +6,7 @@ const Display = ({game}) => {
         <>
         {
             game.display.map((row, i)=>(
-            <Row key={i} i={i} row={row} game ={game} />
+                <Row key={i} i={i} row={row} game ={game} />
             ))
         }
         </>

@@ -8,12 +8,12 @@ function App() {
     speed: 0,
     play: true,
     xdim:25,
-    ydim:25,
+    ydim:30,
     display: ["unset"]
   })
 
   const resetDisplay = () => {
-    setGame({...game, display: Array.from({length: game.xdim},()=> Array.from({length: game.ydim}, () => false))})
+    setGame({...game, display: Array.from({length: game.ydim},()=> Array.from({length: game.xdim}, () => false))})
   }
 
   // initialize the display array
