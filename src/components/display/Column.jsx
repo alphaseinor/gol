@@ -9,8 +9,7 @@ const Column = ({i, j, col}) => {
 
     return (
         <button 
-            key={j} 
-            value={`{x:${j}, y:${i}}`} 
+            key={`${i},${j}`} 
             className={col.toString()}
             onClick={()=>{
                 const display = produce(game.display, updateButton => {
