@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef  } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import './App.scss';
 import Display from './components/display/Display';
 
@@ -7,51 +7,49 @@ import Header from './components/header/Header';
 
 function App() {
 
-  const [game, setGame] = useState({
+  const initialState = {
     speed: 10,
     play: false,
     xdim:25,
     ydim:30,
-    display: ["unset"]
-  })
+    display: ["unset"],
+    refresh: true
+  }
+
+  const [game, setGame] = useState(initialState)
 
   const playRef = useRef(game.play)
   playRef.current = game.play
 
   const resetDisplay = () => {
-    setGame({...game, display: Array.from({length: game.ydim},()=> Array.from({length: game.xdim}, () => false))})
+    if(game.display[0] === "unset"){
+      console.log(`resetDisplay unset`)
+      let gameState = localStorage.getItem("gameState")
+      gameState = JSON.parse(gameState)
+      if(gameState == null || gameState.display[0] === "unset"){
+        console.log(`resetDisplay null or unset in localStorage`)
+        setGame({...game, display: Array.from({length: game.ydim},()=> Array.from({length: game.xdim}, () => false))})
+      } else {
+        console.log(`resetDisplay setGame with localStorage`)
+        setGame(gameState)
+      }
+    }
   }
 
   // initialize the display array
   useEffect(()=>{
-    if(game.display[0] === "unset"){
-      const gameState = localStorage.getItem("gameState")
-      if(gameState == null){
-        resetDisplay()
-      } else {
-        setGame(JSON.parse(gameState))
-      }
-    }
+    resetDisplay()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
-
-
   const simulationLoop = ()=> {
     if(playRef.current === true){
-      console.log("update" + game.play)
+      
       setTimeout(simulationLoop, game.speed * 100)
     }
   }
-
-
   
   useEffect(() => {
-    // if(!playRef){
-    //   console.log("no playRef")
-    //   return
-    // }
     const timer = simulationLoop()
     return () => clearTimeout(timer);
   }, [game.play])
@@ -64,7 +62,7 @@ function App() {
   }, [game])
 
   return (
-    <GameContext.Provider value={{game, setGame}} >
+    <GameContext.Provider value={{game, setGame, initialState, resetDisplay}} >
     <div className="App">
       <header>
         <Header />

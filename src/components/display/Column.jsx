@@ -11,7 +11,8 @@ const Column = ({i, j, col}) => {
         <button 
             key={`${i},${j}`} 
             className={col.toString()}
-            onClick={()=>{
+            onClick={(e)=>{
+                e.preventDefault()
                 const display = produce(game.display, updateButton => {
                     updateButton[i][j] = game.display[i][j] ? false : true;
                 })
