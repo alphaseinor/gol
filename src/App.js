@@ -30,6 +30,9 @@ function App() {
   const playRef = useRef(game.play)
   playRef.current = game.play
 
+  const displayRef = useRef(game.display)
+  displayRef.current = game.display
+
   const resetDisplay = () => {
     if(game.display[0] === "unset"){
       console.log(`resetDisplay unset`)
@@ -51,11 +54,11 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const simulationLoop = ()=> {
+  const simulationLoop = () => {
     if(playRef.current === true){
       console.log("loop")
 
-      let display = produce(game.display, updateElement => {
+      let display = produce(displayRef.current, updateElement => {
         game.display.forEach((row, i) => {
           row.forEach((col, j) =>{
             let neighbourCount = 0;
@@ -63,9 +66,9 @@ function App() {
               const xi = x+i
               const jy = y+j
               //check boundry of element, edge cases
-              if(xi > -1 && xi < game.display.length && jy > -1 && jy < row.length){
+              if(xi > -1 && xi < displayRef.current.length && jy > -1 && jy < row.length){
                 //count the number of neighbors
-                if(game.display[xi][jy] === true){
+                if(displayRef.current[xi][jy] === true){
                   neighbourCount++;
                 }
               }
@@ -74,7 +77,7 @@ function App() {
             })
             if(neighbourCount < 2 || neighbourCount > 3){
               updateElement[i][j] = false
-            } else if(game.display[i][j] === false && neighbourCount === 3){
+            } else if(displayRef.current[i][j] === false && neighbourCount === 3){
               updateElement[i][j] = true
             }
           })
