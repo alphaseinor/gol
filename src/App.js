@@ -12,20 +12,20 @@ function App() {
   const neighbours = [
     [-1, -1],   [0, -1],   [1, -1],
     [-1, 0 ],              [1, 0 ],
-    [-1, 1 ],   [0, 1 ],   [1, 1 ],
+    [-1, 1 ],   [0, 1 ],   [1, 1 ]
   ]
 
   const initialState = {
     speed: 10,
     play: false,
     xdim:25,
-    ydim:30,
+    ydim:45,
     display: ["unset"],
-    refresh: true
+    refresh: true,
+    generation: 0
   }
 
   const [game, setGame] = useState(initialState)
-  const [generation, setGeneration] = useState(0)
 
   const playRef = useRef(game.play)
   playRef.current = game.play
@@ -59,16 +59,16 @@ function App() {
       console.log("loop")
 
       let display = produce(displayRef.current, updateElement => {
-        game.display.forEach((row, i) => {
+        displayRef.current.forEach((row, i) => {
           row.forEach((col, j) =>{
             let neighbourCount = 0;
             neighbours.forEach(([x, y])=>{
               const xi = x+i
-              const jy = y+j
+              const yj = y+j
               //check boundry of element, edge cases
-              if(xi > -1 && xi < displayRef.current.length && jy > -1 && jy < row.length){
+              if(xi > -1 && xi < displayRef.current.length && yj > -1 && yj < row.length){
                 //count the number of neighbors
-                if(displayRef.current[xi][jy] === true){
+                if(displayRef.current[xi][yj] === true){
                   neighbourCount++;
                 }
               }
@@ -83,16 +83,15 @@ function App() {
           })
         });
       })
-      setGame({...game, display: display })
+      setGame({...game, display })
 
-      setTimeout(simulationLoop, game.speed * 100)
+      setTimeout(simulationLoop, game.speed * 10)
     }else{
       return
     }
   }
   
   useEffect(() => {
-    console.log(generation)
     const timer = simulationLoop()
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
