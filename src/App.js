@@ -12,26 +12,29 @@ function App() {
   const neighbours = [
     [-1, -1],   [0, -1],   [1, -1],
     [-1, 0 ],              [1, 0 ],
-    [-1, 1 ],   [0, 1 ],   [1, 1 ],
+    [-1, 1 ],   [0, 1 ],   [1, 1 ]
   ]
 
   const initialState = {
     speed: 10,
     play: false,
     xdim:25,
-    ydim:30,
+    ydim:45,
     display: ["unset"],
-    refresh: true
+    refresh: true,
+    generation: 0
   }
 
   const [game, setGame] = useState(initialState)
-  const [generation, setGeneration] = useState(0)
 
   const playRef = useRef(game.play)
   playRef.current = game.play
 
   const displayRef = useRef(game.display)
   displayRef.current = game.display
+
+  const generationRef = useRef(game.generation)
+  generationRef.current = game.generation
 
   const resetDisplay = () => {
     if(game.display[0] === "unset"){
@@ -54,36 +57,40 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const step = () => {
+    let display = produce(displayRef.current, updateElement => {
+      displayRef.current.forEach((row, i) => {
+        row.forEach((col, j) =>{
+          let neighbourCount = 0;
+          neighbours.forEach(([x, y])=>{
+            const xi = x+i
+            const yj = y+j
+            //check boundry of element, edge cases
+            if(xi > -1 && xi < displayRef.current.length && yj > -1 && yj < row.length){
+              //count the number of neighbors
+              if(displayRef.current[xi][yj] === true){
+                neighbourCount++;
+              }
+            }
+            
+            // if there's too little or too many neighbors, then the cell dies
+          })
+          if(neighbourCount < 2 || neighbourCount > 3){
+            updateElement[i][j] = false
+          } else if(displayRef.current[i][j] === false && neighbourCount === 3){
+            updateElement[i][j] = true
+          }
+        })
+      });
+    })
+    setGame({...game, display, generation: generationRef.current +1 })
+  }
+
   const simulationLoop = () => {
     if(playRef.current === true){
       console.log("loop")
 
-      let display = produce(displayRef.current, updateElement => {
-        game.display.forEach((row, i) => {
-          row.forEach((col, j) =>{
-            let neighbourCount = 0;
-            neighbours.forEach(([x, y])=>{
-              const xi = x+i
-              const jy = y+j
-              //check boundry of element, edge cases
-              if(xi > -1 && xi < displayRef.current.length && jy > -1 && jy < row.length){
-                //count the number of neighbors
-                if(displayRef.current[xi][jy] === true){
-                  neighbourCount++;
-                }
-              }
-              
-              // if there's too little or too many neighbors, then the cell dies
-            })
-            if(neighbourCount < 2 || neighbourCount > 3){
-              updateElement[i][j] = false
-            } else if(displayRef.current[i][j] === false && neighbourCount === 3){
-              updateElement[i][j] = true
-            }
-          })
-        });
-      })
-      setGame({...game, display: display })
+      step()
 
       setTimeout(simulationLoop, game.speed * 100)
     }else{
@@ -92,7 +99,6 @@ function App() {
   }
   
   useEffect(() => {
-    console.log(generation)
     const timer = simulationLoop()
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -106,7 +112,7 @@ function App() {
   }, [game])
 
   return (
-    <GameContext.Provider value={{game, setGame}} >
+    <GameContext.Provider value={{game, setGame, step}} >
     <div className="App">
       <header>
         <Header />
@@ -114,6 +120,9 @@ function App() {
       <main>
         <Display />
       </main>
+      <footer>
+        <p>Generation: {game.generation}</p>
+      </footer>
     </div>
     </GameContext.Provider>
   );

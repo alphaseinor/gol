@@ -15,7 +15,7 @@ const Column = ({i, j, col}) => {
                 e.preventDefault()
                 if(!game.play){
                     const display = produce(game.display, updateButton => {
-                        updateButton[i][j] = game.display[i][j] ? false : true;
+                        updateButton[i][j] = !game.display[i][j];
                     })
                     setGame({...game, display})
                 }

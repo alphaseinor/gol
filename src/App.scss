@@ -89,6 +89,17 @@ header{
       padding: .25rem 1rem;
     }
   }
+  .speed{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+footer{
+  p{
+    margin: 1rem 0;
+  }
 }
 
 section{
