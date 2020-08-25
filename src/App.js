@@ -16,10 +16,10 @@ function App() {
   ]
 
   const initialState = {
-    speed: 10,
+    speed: 1,
     play: false,
     xdim:25,
-    ydim:45,
+    ydim:25,
     display: ["unset"],
     refresh: true,
     generation: 0
@@ -83,6 +83,7 @@ function App() {
         })
       });
     })
+
     setGame({...game, display, generation: generationRef.current +1 })
   }
 

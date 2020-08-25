@@ -37,20 +37,20 @@ const Header = () => {
         </div>
         <div className="speed">
             <button
-                disabled = {game.speed > 9 ? true : game.play ? true : false}
-                onClick={(e)=>{
-                    e.preventDefault()
-                    setGame({...game, speed: game.speed + 1})
-                }}
-            >+</button>
-            <h3>Delay: {game.speed}</h3>
-            <button
                 disabled = {game.speed <= 1 ? true : game.play ? true : false}
                 onClick={(e)=>{
                     e.preventDefault()
                     setGame({...game, speed: game.speed - 1})
                 }}
             >-</button>
+            <h3>Delay: {game.speed}</h3>
+            <button
+                disabled = {game.speed > 9 ? true : game.play ? true : false}
+                onClick={(e)=>{
+                    e.preventDefault()
+                    setGame({...game, speed: game.speed + 1})
+                }}
+            >+</button>
         </div>
     </>)
 }

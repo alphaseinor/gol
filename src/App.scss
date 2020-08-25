@@ -64,8 +64,8 @@ button{
   background: none;
   border: none;
   border: .5px lightgray solid;
-  height: 13px;
-  width: 12.5px;
+  height: 26px;
+  width: 26px;
   padding: 0px 0px;
   margin: 0px 0px;
   color: transparent;
@@ -103,5 +103,6 @@ footer{
 }
 
 section{
-  height: 12px;
+  display: flex;
+  flex-wrap: nowrap;
 }
